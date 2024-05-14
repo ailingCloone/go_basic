@@ -1,0 +1,2 @@
+INFO: 2024/03/22 11:12:32 addhandler.go:42: Incoming Request: {"Version":"1.1.0","Guid":"d9a0a42c-9abc-457b-b219-70b0c1f01ed1","Title":"Agree Term","Content":"\u003cp\u003eAgree Term\u003c/p\u003e"}
+INFO: 2024/03/22 11:12:33 addhandler.go:63: [x] Request:  {"Version":"1.1.0","Guid":"d9a0a42c-9abc-457b-b219-70b0c1f01ed1","Title":"Agree Term","Content":"\u003cp\u003eAgree Term\u003c/p\u003e"} -> Response:  {"success":true,"message":"Success add record.","data":{"content":"\u003cp\u003eAgree Term\u003c/p\u003e","title":"Agree Term"}}

@@ -1,0 +1,55 @@
+name: Continuous Integration and Deployment
+
+on:
+    pull_request:
+        branches: [ dev, staging, prod, main ]
+  
+    push:
+        branches: [ dev, staging, prod, main ]
+
+jobs:
+    ci_process:
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+ 
+            - name: Set up Go
+              uses: actions/setup-go@v4
+              with:
+                go-version: ">=1.16"
+                cache: false
+
+            - name: Print current directory
+              run: pwd
+              
+            - name: Install dependencies
+              run: go mod tidy
+
+            - name: Build Program
+              run: go build -o nrs_customer_module_backend
+    
+    deploy_staging:
+        runs-on: ubuntu-latest
+
+        needs: ci_process
+        
+        if: github.event_name == 'push' && github.event.ref == 'refs/heads/staging'
+        
+        steps:
+        
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: SSH into the server and run commands
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.NRS_CUSTOMER_MODULE_DOMAIN }}
+                username: cloone_dev
+                key: ${{ secrets.NRS_CUSTOMER_MODULE_SSH_PRIVATE_KEY }}
+                port: 51520  # Replace with your custom port
+                script: |
+                  # Commands to run on the remote server
+                  cd ../home/nrs_customer_module_backend/
+                  git pull origin staging
